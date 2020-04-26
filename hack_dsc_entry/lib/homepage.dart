@@ -11,30 +11,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-    final TextEditingController _filter = new TextEditingController();
+    final TextEditingController _searchbarFilter = new TextEditingController();
 
     final dio = new Dio();
 
     String _searchText = "";
 
-    List names = new List();
+    List searchNames = new List();
 
-    List filteredNames = new List();
+    List filteredSearchNames = new List();
 
     Icon _searchIcon = new Icon(Icons.search);
 
-    Widget _appBarTitle = new Text( 'Search Exmaple' );
+    Widget _appBarTitle = new Text( 'Search Example' );
 
     _MyHomePageState() {
-        _filter.addListener(() {
-            if (_filter.text.isEmpty) {
+        _searchbarFilter.addListener(() {
+            if (_searchbarFilter.text.isEmpty) {
                 setState(() {
                     _searchText = "";
-                    filteredNames = names;
+                    filteredSearchNames = searchNames;
                 });
             } else {
                 setState(() {
-                    _searchText = _filter.text;
+                    _searchText = _searchbarFilter.text;
                 });
             }
         });
@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     @override
     void initState() {
-        this._getNames();
+        this._getSearchNames();
         super.initState();
     }
 
@@ -68,28 +68,30 @@ class _MyHomePageState extends State<MyHomePage> {
         );
     }
 
+    // Builds the visual for the list
     Widget _buildList() {
         if (!(_searchText.isEmpty)) {
             List tempList = new List();
-            for (int i = 0; i < filteredNames.length; i++) {
-                if (filteredNames[i]['name'].toLowerCase().contains(_searchText.toLowerCase())) {
-                    tempList.add(filteredNames[i]);
+            for (int i = 0; i < filteredSearchNames.length; i++) {
+                if (filteredSearchNames[i]['name'].toLowerCase().contains(_searchText.toLowerCase())) {
+                    tempList.add(filteredSearchNames[i]);
                 }
             }
-                filteredNames = tempList;
+                filteredSearchNames = tempList;
             }
             return ListView.builder(
-            itemCount: names == null ? 0 : filteredNames.length,
+            itemCount: searchNames == null ? 0 : filteredSearchNames.length,
             itemBuilder: (BuildContext context, int index) {
                 return new ListTile(
-                    title: Text(filteredNames[index]['name']),
-                    onTap: () => print(filteredNames[index]['name']),
+                    title: Text(filteredSearchNames[index]['name']),
+                    onTap: () => print(filteredSearchNames[index]['name']),
                 );
             },
         );
     }
 
-    void _getNames() async {
+    // Builds the initial list of items in the database
+    void _getSearchNames() async {
         final response = await dio.get('https://swapi.co/api/people');
         List tempList = new List();
         for (int i = 0; i < response.data['results'].length; i++) {
@@ -97,27 +99,31 @@ class _MyHomePageState extends State<MyHomePage> {
         }
 
         setState(() {
-            names = tempList;
-            filteredNames = names;
+            searchNames = tempList;
+            filteredSearchNames = searchNames;
         });
     }
 
+    // Change the search bar's appearance when it is tapped
     void _searchPressed() {
         setState(() {
+            // If the search bar wasn't already selected
             if (this._searchIcon.icon == Icons.search) {
                 this._searchIcon = new Icon(Icons.close);
                 this._appBarTitle = new TextField(
-                    controller: _filter,
+                    controller: _searchbarFilter,
                     decoration: new InputDecoration(
                         prefixIcon: new Icon(Icons.search),
                         hintText: 'Search...'
                     ),
                 );
-            } else {
+            }
+            // If the search bar was already selected
+            else {
                 this._searchIcon = new Icon(Icons.search);
                 this._appBarTitle = new Text('Search Example');
-                filteredNames = names;
-                _filter.clear();
+                filteredSearchNames = searchNames;
+                _searchbarFilter.clear();
             }
         });
     }
