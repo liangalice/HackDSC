@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'database.dart';
 
 class MyHomePage extends StatefulWidget {
     MyHomePage({Key key, this.title}) : super(key: key);
@@ -23,7 +24,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     Icon _searchIcon = new Icon(Icons.search);
 
-    Widget _appBarTitle = new Text( 'Search Example' );
+    Widget _appBarTitle = new Text( 'Ingredient Swap' );
+
+    database ingredients = new database();
 
     _MyHomePageState() {
         _searchbarFilter.addListener(() {
@@ -68,12 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
         );
     }
 
-    // Builds the visual for the list
+    // Builds the list as the user types
     Widget _buildList() {
         if (!(_searchText.isEmpty)) {
             List tempList = new List();
             for (int i = 0; i < filteredSearchNames.length; i++) {
-                if (filteredSearchNames[i]['name'].toLowerCase().contains(_searchText.toLowerCase())) {
+                if (filteredSearchNames[i].name.toLowerCase().contains(_searchText.toLowerCase())) {
                     tempList.add(filteredSearchNames[i]);
                 }
             }
@@ -83,8 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: searchNames == null ? 0 : filteredSearchNames.length,
             itemBuilder: (BuildContext context, int index) {
                 return new ListTile(
-                    title: Text(filteredSearchNames[index]['name']),
-                    onTap: () => print(filteredSearchNames[index]['name']),
+                    title: Text(filteredSearchNames[index].name),
+                    onTap: () => print(filteredSearchNames[index].name),
                 );
             },
         );
@@ -92,10 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Builds the initial list of items in the database
     void _getSearchNames() async {
-        final response = await dio.get('https://swapi.co/api/people');
         List tempList = new List();
-        for (int i = 0; i < response.data['results'].length; i++) {
-            tempList.add(response.data['results'][i]);
+        for (int i = 0; i < ingredients.getLength(); i++) {
+            // Alice: Replace this code such that it builds the tempList with your database
+            // and each entry's name?
+            tempList.add(ingredients.getEntry(i));
         }
 
         setState(() {
