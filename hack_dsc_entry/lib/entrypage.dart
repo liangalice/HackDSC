@@ -11,13 +11,28 @@ class EntryPage extends MaterialPageRoute<Null> {
                 elevation: 1.0,
             ),
             body: Center(
-                child: RaisedButton(
-                    onPressed: () {
-                        Navigator.pop(
-                            ctx
-                        );
-                    },
-                    child: Text(entry.name),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Text(entry.name),
+                        //calories, totalfat, sfat, transfat, cholesterol, sodium, tcarbo, tsugar, asugar
+                        Text("Calories " + entry.calories.toString()),
+                        Text("Saturated Fat " + entry.sfat.toString()),
+                        Text("Trans Fat" + entry.transfat.toString()),
+                        Text("Cholesterol " + entry.cholesterol.toString()),
+                        Text("Sodium " + entry.sodium.toString()),
+                        Text("Total Carbohydrates " + entry.tcarbo.toString()),
+                        Text("Total Sugar " + entry.tsugar.toString()),
+                        Text("Added Sugar " + entry.asugar.toString()),
+                        RaisedButton(
+                            onPressed: () {
+                                Navigator.pop(
+                                    ctx
+                                );
+                            },
+                            child: Text("Back"),
+                        ),
+                    ],
                 ),
             ),
         );
