@@ -6,18 +6,18 @@ class databaseEntry {
 	databaseEntry(name) {
 		this.name = name;
 	}
-
-
 }
 
 class database {
 	List allEntries = new List();
 
 	database(){
+		// Manually create the entries
 		this.addEntry('item 1');
 		this.addEntry('item 2');
 		this.addEntry('item 3');
 		this.addEntry('New item');
+		this.addEntry('carrot');
 	}
 
 	addEntry(name){
