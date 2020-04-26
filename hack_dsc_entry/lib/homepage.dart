@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'database.dart';
+import 'entrypage.dart';
 
 class MyHomePage extends StatefulWidget {
     MyHomePage({Key key, this.title}) : super(key: key);
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return Scaffold(
                 appBar: _buildBar(context),
             body: Container(
-                child: _buildList(),
+                child: _buildList(context),
             ),
             resizeToAvoidBottomPadding: false,
         );
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     // Builds the list as the user types
-    Widget _buildList() {
+    Widget _buildList(BuildContext context) {
         if (!(_searchText.isEmpty)) {
             List tempList = new List();
             for (int i = 0; i < filteredSearchNames.length; i++) {
@@ -87,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
             itemBuilder: (BuildContext context, int index) {
                 return new ListTile(
                     title: Text(filteredSearchNames[index].name),
-                    onTap: () => print(filteredSearchNames[index].name),
+                    onTap: () {
+                        Navigator.push(context, EntryPage());
+                    },
                 );
             },
         );
