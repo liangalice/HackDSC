@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return new ListTile(
                     title: Text(filteredSearchNames[index].name),
                     onTap: () {
-                        Navigator.push(context, EntryPage());
+                        Navigator.push(context, EntryPage(entry: filteredSearchNames[index]));
                     },
                 );
             },

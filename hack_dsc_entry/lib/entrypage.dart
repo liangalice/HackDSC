@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 
 class EntryPage extends MaterialPageRoute<Null> {
-    EntryPage() : super(builder: (BuildContext ctx) {
-        databaseEntry entry;
+    final databaseEntry entry;
+    EntryPage({this.entry}) : super(builder: (BuildContext ctx) {
         return Scaffold(
             appBar: AppBar(
                 backgroundColor: Theme.of(ctx).canvasColor,
@@ -16,7 +16,7 @@ class EntryPage extends MaterialPageRoute<Null> {
                             ctx
                         );
                     },
-                    child: Text("Go to Page Three"),
+                    child: Text(entry.name),
                 ),
             ),
         );
